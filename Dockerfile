@@ -4,7 +4,7 @@ ARG BASE_VERSION=ltsc2022
 # Use the latest Windows Server Core image with .NET Framework 4.8.
 FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-$BASE_VERSION
 
-ENV MSYS2_URL="https://repo.msys2.org/distrib" `
+ENV MSYS2_URL="https://mirror.msys2.org/distrib" `
     MSYS2_TARGET="x86_64" `
     MSYS2_VERSION="20220319" `
     MSYS_HOME="C:\msys64" `
