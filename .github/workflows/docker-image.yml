@@ -26,6 +26,17 @@ jobs:
       # List existing docker images
       - name: List images
         run: docker images
+        
+      - name: Azure Container Registry Login
+        uses: Azure/docker-login@v1
+        with:
+          # Container registry username
+          username: ${{ secrets.ACR_USER_ID }} # default is 
+          # Container registry password
+          password: ${{ secrets.ACR_USER_PWD }} # default is 
+          # Container registry server url
+          login-server: https://sgservianbench.azurecr.io # default is https://index.docker.io/v1/
+        
       
       - name: Build and push docker image
         run: docker build . -t msys2:x86_x64-windows-2019-v${{ github.run_number }}.${{ github.run_attempt }} --build-arg BASE_VERSION=ltsc2019
