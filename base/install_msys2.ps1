@@ -45,9 +45,12 @@ Write-Host "Extracting MSYS2 from $msys_dist into ${env:MSYS_HOME}"
 & "$seven_zip_target\7z.exe" x "$tmp_dir\$msys_tar_name" -o"C:" -aoa -y -bd | out-null
 Write-Host "Use custom pacman post install"
 Copy-Item "${PSScriptRoot}\07-pacman-key.post" "${env:MSYS_HOME}\etc\post-install\" -Verbose -Force
-& "${PSScriptRoot}\msys2.bat"
+& "${PSScriptRoot}\msys2.bat" "${PSScriptRoot}\packages.txt"
 Write-Host "MSYS2 ${env:MSYS2_VERSION} installed into ${env:MSYS_HOME}"
+
+# Update path
+[Environment]::SetEnvironmentVariable("PATH", [string]::Join(';', $Env:PATH, $ENV:MSYS_HOME), [EnvironmentVariableTarget]::Machine)
 
 # Cleanup
 Write-Host "Removing all files and directories from $tmp_dir"
-Remove-Item -Path "$tmp_dir\*" -Recurse -Force
+Remove-Item -Path $tmp_dir -Recurse -Force

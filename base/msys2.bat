@@ -15,8 +15,11 @@
 @set exit_code=%errorlevel%
 @if %exit_code% neq 0 goto exit
 
-@echo Installing pacman base-devel package group (MSYS2 development tools)
-@pacman -S --needed --noconfirm --overwrite '*' base-devel mingw-w64-%MSYS2_TARGET%-gcc
+@set PACKAGES=mingw-w64-%MSYS2_TARGET%-gcc
+@if "%~1" NEQ "" @for /F "usebackq" %%P in ("%~1") do set PACKAGES=!PACKAGES! %%P
+@echo Installing packages %PACKAGES%
+
+@pacman -S --needed --noconfirm --overwrite '*' %PACKAGES%
 @set exit_code=%errorlevel%
 @if %exit_code% neq 0 goto exit
 

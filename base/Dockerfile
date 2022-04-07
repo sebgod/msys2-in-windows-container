@@ -17,6 +17,7 @@ WORKDIR /install
 COPY 07-pacman-key.post /install
 COPY msys2.bat /install
 COPY install_msys2.ps1 /install/
+COPY packages.txt /install/
 RUN /install/install_msys2.ps1
 
 WORKDIR /src
