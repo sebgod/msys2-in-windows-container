@@ -43,6 +43,8 @@ Write-Host "Downloading MSYS2 from ${msys_url} into ${msys_dist}"
 Write-Host "Extracting MSYS2 from $msys_dist into ${env:MSYS_HOME}"
 & "$seven_zip_target\7z.exe" x "$msys_dist" -o"$tmp_dir" -aoa -y -bd | out-null
 & "$seven_zip_target\7z.exe" x "$tmp_dir\$msys_tar_name" -o"C:" -aoa -y -bd | out-null
+Write-Host "Use custom pacman post install"
+Copy-Item "${PSScriptRoot}\07-pacman-key.post" "${env:MSYS_HOME}\etc\post-install\" -Verbose -Force
 & "${PSScriptRoot}\msys2.bat"
 Write-Host "MSYS2 ${env:MSYS2_VERSION} installed into ${env:MSYS_HOME}"
 

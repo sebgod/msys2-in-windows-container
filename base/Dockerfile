@@ -12,8 +12,9 @@ ENV MSYS2_URL="https://mirror.msys2.org/distrib" `
     SEVEN_ZIP_DOWNLOAD_URL="https://www.7-zip.org/a"
 
 WORKDIR /install
-COPY install_msys2.ps1 /install
+COPY 07-pacman-key.post /install
 COPY msys2.bat /install
+COPY install_msys2.ps1 /install/
 RUN /install/install_msys2.ps1
 
 WORKDIR /src
