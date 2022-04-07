@@ -13,6 +13,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  ACR_NAME: sgservianbench.azurecr.io
+  DOCKER_IMAGE_TAG: msys2:x86_x64-windows-2019-v${{ github.run_number }}.${{ github.run_attempt }}
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -23,24 +27,23 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # List existing docker images
-      - name: List images
-        run: docker images
-        
       - name: Azure Container Registry Login
         uses: Azure/docker-login@v1
         with:
-          # Container registry username
-          username: ${{ secrets.ACR_USER_ID }} # default is 
-          # Container registry password
-          password: ${{ secrets.ACR_USER_PWD }} # default is 
-          # Container registry server url
-          login-server: https://sgservianbench.azurecr.io # default is https://index.docker.io/v1/
-        
+          username: ${{ secrets.ACR_USER_ID }}
+          password: ${{ secrets.ACR_USER_PWD }}
+          login-server: https://${{ env.ACR_NAME}}
+
+      # List existing docker images
+      - name: List images
+        run: docker images
       
       - name: Build and push docker image
-        run: docker build . -t msys2:x86_x64-windows-2019-v${{ github.run_number }}.${{ github.run_attempt }} --build-arg BASE_VERSION=ltsc2019
+        run: docker build . -t $ENV:ACR_NAME/$ENV:DOCKER_IMAGE_TAG --build-arg BASE_VERSION=ltsc2019
         working-directory: base
 
       - name: List again
         run: docker images
+
+      - name: Push image to ACR
+        run: docker push $ENV:ACR_NAME/$ENV:DOCKER_IMAGE_TAG
