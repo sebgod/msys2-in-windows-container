@@ -15,7 +15,9 @@ on:
 
 env:
   ACR_NAME: sgservianbench.azurecr.io
-  DOCKER_IMAGE_TAG: msys2:x86_x64-windows-2019-v${{ github.run_number }}.${{ github.run_attempt }}
+  IMAGE_NAME: msys2
+  TAG_PRE: x86_x64-windows-2019
+  TAG_VER: v${{ github.run_number }}.${{ github.run_attempt }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -34,16 +36,24 @@ jobs:
           password: ${{ secrets.ACR_USER_PWD }}
           login-server: https://${{ env.ACR_NAME}}
 
+      # Pull potentially existing latest package, this might save build time
+      - name: Fetch existing image from ACR
+        run: docker pull docker push $ENV:ACR_NAME/${ENV:IMAGE_NAME}:${ENV:TAG_PRE}-latest || true
       # List existing docker images
       - name: List images
         run: docker images
       
-      - name: Build and push docker image
-        run: docker build . -t $ENV:ACR_NAME/$ENV:DOCKER_IMAGE_TAG --build-arg BASE_VERSION=ltsc2019
+      - name: Build image
+        run: docker build . -t $ENV:ACR_NAME/${ENV:IMAGE_NAME}:${ENV:TAG_PRE}-${ENV:TAG_VER}  --build-arg BASE_VERSION=ltsc2019
         working-directory: base
+
+      - name: Tag latest
+        run: docker tag $ENV:ACR_NAME/${ENV:IMAGE_NAME}:${ENV:TAG_PRE}-${ENV:TAG_VER} $ENV:ACR_NAME/${ENV:IMAGE_NAME}:${ENV:TAG_PRE}-latest
 
       - name: List again
         run: docker images
 
-      - name: Push image to ACR
-        run: docker push $ENV:ACR_NAME/$ENV:DOCKER_IMAGE_TAG
+      - name: Push images to ACR
+        run: |
+          docker push $ENV:ACR_NAME/${ENV:IMAGE_NAME}:${ENV:TAG_PRE}-${ENV:TAG_VER}
+          docker push $ENV:ACR_NAME/${ENV:IMAGE_NAME}:${ENV:TAG_PRE}-latest
