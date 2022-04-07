@@ -17,7 +17,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    runs-on: windows-2022
+    runs-on: windows-2019
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -28,7 +28,7 @@ jobs:
         run: docker images
       
       - name: Build and push docker image
-        run: docker build -t msys2:x86_x64-windows-2022-v${{ github.run_number }}.${{ github.run_attempt }} .
+        run: docker build . -t msys2:x86_x64-windows-2019-v${{ github.run_number }}.${{ github.run_attempt }} --build-arg BASE_VERSION=ltsc2019
         working-directory: base
 
       - name: List again
