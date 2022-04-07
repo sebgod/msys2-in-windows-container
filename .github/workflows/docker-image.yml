@@ -17,7 +17,7 @@ env:
   ACR_NAME: sgservianbench.azurecr.io
   IMAGE_NAME: msys2
   BASE_VER: ltsc2019
-  TAG_PRE: x86_x64-windows-2019
+  TAG_SUF: x86_x64-windows-2019
   TAG_VER: 20220319
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -43,7 +43,7 @@ jobs:
       
       - name: Build image
         run: |
-          docker build . -t $ENV:ACR_NAME/${ENV:IMAGE_NAME}:${ENV:TAG_PRE}-${ENV:TAG_VER} `
+          docker build . -t $ENV:ACR_NAME/${ENV:IMAGE_NAME}:${ENV:TAG_VER}-${ENV:TAG_SUF} `
             --build-arg BASE_VERSION=${ENV:BASE_VER} `
             --build-arg MSYS2_VERSION=${ENV:TAG_VER}
         working-directory: base
@@ -52,4 +52,4 @@ jobs:
         run: docker images
 
       - name: Push images to ACR
-        run: docker push $ENV:ACR_NAME/${ENV:IMAGE_NAME}:${ENV:TAG_PRE}-${ENV:TAG_VER}
+        run: docker push $ENV:ACR_NAME/${ENV:IMAGE_NAME}:${ENV:TAG_VER}-${ENV:TAG_SUF}
