@@ -28,7 +28,7 @@ jobs:
         run: docker images
       
       - name: Build and push docker image
-        run:  Get-Content -Raw Dockerfile | docker build -t vsbuild-17-windows-2022-v${{ github.run_number }}.${{ github.run_attempt }} -
+        run: docker build -t msys2:x86_x64-windows-2022-v${{ github.run_number }}.${{ github.run_attempt }} .
       
       - name: List again
         run: docker images
