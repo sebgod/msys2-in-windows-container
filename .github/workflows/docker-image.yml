@@ -37,9 +37,6 @@ jobs:
           password: ${{ secrets.ACR_USER_PWD }}
           login-server: https://${{ env.ACR_NAME}}
 
-      # Pull potentially existing latest package, this might save build time
-      - name: Fetch existing image from ACR
-        run: docker pull $ENV:ACR_NAME/${ENV:IMAGE_NAME}:${ENV:TAG_PRE}-${ENV:TAG_VER} || true
       # List existing docker images
       - name: List images
         run: docker images
