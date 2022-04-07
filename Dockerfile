@@ -11,9 +11,12 @@ ENV MSYS2_URL="https://mirror.msys2.org/distrib" `
     SEVEN_ZIP_VERSION="21.07" `
     SEVEN_ZIP_DOWNLOAD_URL="https://www.7-zip.org/a"
 
-COPY install_msys2.ps1 .
-COPY msys2.bat .
-RUN ./install_msys2.ps1
+WORKDIR /install
+COPY install_msys2.ps1 /install
+COPY msys2.bat /install
+RUN /install/install_msys2.ps1
+
+WORKDIR /src
 
 # launch the msys shell, by default execute bash
 # can use things like gcc as the command
