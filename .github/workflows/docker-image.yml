@@ -41,6 +41,9 @@ jobs:
       - name: List images
         run: docker images
 
+      - name: Configure build for amd64
+        uses: ilammy/msvc-dev-cmd@v1
+
       - name: Compile helper app
         run: cl msys2_shell.c
         working-directory: base
