@@ -48,9 +48,6 @@ Copy-Item "${PSScriptRoot}\07-pacman-key.post" "${env:MSYS_HOME}\etc\post-instal
 & "${PSScriptRoot}\msys2.bat" "${PSScriptRoot}\packages.txt"
 Write-Host "MSYS2 ${env:MSYS2_VERSION} installed into ${env:MSYS_HOME}"
 
-# Update path
-[Environment]::SetEnvironmentVariable("PATH", [string]::Join(';', $Env:PATH, $ENV:MSYS_HOME), [EnvironmentVariableTarget]::Machine)
-
 # Cleanup
 Write-Host "Removing all files and directories from $tmp_dir"
 Remove-Item -Path $tmp_dir -Recurse -Force

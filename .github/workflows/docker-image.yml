@@ -40,7 +40,11 @@ jobs:
       # List existing docker images
       - name: List images
         run: docker images
-      
+
+      - name: Compile helper app
+        run: cl msys2_shell.c
+        working-directory: base
+
       - name: Build image
         run: |
           docker build . -t $ENV:ACR_NAME/${ENV:IMAGE_NAME}:${ENV:TAG_VER}-${ENV:TAG_SUF} `

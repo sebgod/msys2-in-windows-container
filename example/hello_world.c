@@ -2,8 +2,9 @@
 #include <stdio.h>
 
 int
-main(int argc, char *argv)
+main(int argc, char *argv[])
 {
-    printf("%s\n", "Hello world!");
+    printf("%s", "Hello world!");
+
     return EXIT_SUCCESS;
 }

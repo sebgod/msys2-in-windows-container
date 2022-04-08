@@ -14,15 +14,16 @@ ENV MSYS2_URL="https://mirror.msys2.org/distrib" `
     SEVEN_ZIP_DOWNLOAD_URL="https://www.7-zip.org/a"
 
 WORKDIR /install
-COPY 07-pacman-key.post /install
-COPY msys2.bat /install
-COPY install_msys2.ps1 /install/
-COPY packages.txt /install/
+COPY 07-pacman-key.post .
+COPY msys2.bat .
+COPY install_msys2.ps1 .
+COPY packages.txt .
+COPY msys2_shell.exe .
+
 RUN /install/install_msys2.ps1
 
 WORKDIR /src
 
-# launch the msys shell, by default execute bash
+# launch the msys shell, by default execute bash. PowerShell works as well
 # can use things like gcc as the command
-ENTRYPOINT ["C:\\msys64\\msys2_shell.cmd", "-mingw64", "-no-start", "-defterm", "-c"]
-CMD ["bash"]
+SHELL ["C:\\install\\msys2_shell.exe"]
